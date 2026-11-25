@@ -55,6 +55,21 @@ Connect-IPPSSession; Get-Label | Format-Table DisplayName, Guid, ParentId
 
 A wrong GUID is rejected by SharePoint, so nothing bad gets set.
 
+## Good to know
+
+- **Default only = no files touched.** Without `-LabelExistingFiles` the script only changes library settings. New and edited files then get the label within a few minutes; existing files stay as they are.
+- **Changing or removing a default isn't instant.** In testing, files uploaded a few seconds after a default was removed still got the old label. Microsoft quotes about 15 minutes for the tenant-wide switch (`Set-SPOTenant -DisableDocumentLibraryDefaultLabeling`); allow similar per library.
+
+## Labelling existing files without a script
+
+If you'd rather not re-save files, Microsoft Purview has an auto-labelling policy type that applies each library's default label to existing files. In the Purview portal go to **Information Protection > Auto-labeling policies > Create auto-labeling policy > Auto-apply to default SPO only.**, then pick sites.
+
+- One policy of this type per tenant, up to 10 sites at a time (edit the policy to move on to the next batch).
+- Only covers libraries that already have a default label, so set the defaults first (this script).
+- Runs on Microsoft's schedule. There's no "run now".
+- Can optionally replace lower-priority labels. Leave that off unless you mean it.
+- Needs premium licensing. Check the Microsoft Purview service description.
+
 ## Side effects of `-LabelExistingFiles`
 
 - **One new version per file.** The label is stored inside the file, so writing it always creates a version, whatever method you use. The overwrite check-in avoids a second version from the save itself.
