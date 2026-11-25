@@ -306,7 +306,7 @@ foreach ($siteGroup in ($rows | Group-Object SiteUrl)) {
             $wantId = if ($Remove) { '' } else { (Resolve-Label $t.Label).Id }
 
             if ($res.Before -eq $wantId) {
-                $res.After = $res.Before; $res.Status = 'NoChange'; $res.Detail = 'Already set'
+                $res.After = $res.Before; $res.Status = 'NoChange'; $res.Detail = if ($Remove) { 'No default to remove' } else { 'Already set' }
             } elseif ($PSCmdlet.ShouldProcess("$site / $($t.LibraryName)", $(if ($Remove) { 'Remove default sensitivity label' } else { "Set default sensitivity label to $($t.Label) ($wantId)" }))) {
                 if ($Remove) { Set-PnPList -Identity $list.Id -DefaultSensitivityLabelForLibrary $null | Out-Null }
                 else { Set-PnPList -Identity $list.Id -DefaultSensitivityLabelForLibrary $wantId | Out-Null }

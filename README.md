@@ -85,6 +85,7 @@ If you'd rather not re-save files, Microsoft Purview has an auto-labelling polic
 | Test | Result |
 |---|---|
 | Set / re-run / remove defaults on several libraries | Read-back matches; re-run is a no-op |
+| 3 libraries, 3 different labels, one CSV run | All set in 12 s; a new file in each got its own library's label within 90 s; files already there untouched |
 | Default only, on a library with 417 existing files | Set in ~10 s; 5 min later all 417 files unchanged (no label, same version, same Modified) |
 | Missing library, bad GUID | Clear failure per row; other rows carry on |
 | `-AllLibraries` | Skips Form Templates, Site Assets, Style Library |
