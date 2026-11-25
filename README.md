@@ -1,6 +1,10 @@
 # SharePoint default sensitivity label, in bulk
 
-PowerShell (PnP.PowerShell) to set the **default sensitivity label** on many SharePoint Online document libraries at once, and optionally **label the files already in them**, for free, with one new version per file.
+PowerShell (PnP.PowerShell) to set the **default sensitivity label** on many SharePoint Online document libraries at once, instead of clicking through Library settings one library at a time. New and edited files in those libraries then get the label automatically.
+
+Under the hood it's `Set-PnPList -DefaultSensitivityLabelForLibrary`, run against every library in a CSV (or every library on a site), with a dry run, a read-back check, an undo and a results log.
+
+Optional extra: `-LabelExistingFiles` also labels the files already in the libraries, for free, with one new version per file.
 
 ## Why
 
@@ -81,6 +85,7 @@ If you'd rather not re-save files, Microsoft Purview has an auto-labelling polic
 | Test | Result |
 |---|---|
 | Set / re-run / remove defaults on several libraries | Read-back matches; re-run is a no-op |
+| Default only, on a library with 417 existing files | Set in ~10 s; 5 min later all 417 files unchanged (no label, same version, same Modified) |
 | Missing library, bad GUID | Clear failure per row; other rows carry on |
 | `-AllLibraries` | Skips Form Templates, Site Assets, Style Library |
 | Default set, existing files untouched for 15 min | **Not labelled** |
